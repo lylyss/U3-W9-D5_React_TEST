@@ -30,13 +30,13 @@ function SectionCarousel({ title, search }) {
 
   const slides = [];
   for (let i = 0; i < movies.length; i += 8) {
-    slides.push(movies.slice(i, i + 10));
+    slides.push(movies.slice(i, i + 8));
   }
 
   return (
     <div className="mb-5">
       <h5 className="text-white">{title}</h5>
-      <Carousel indicators={false} interval={2000}>
+      <Carousel indicators={false} interval={4000}>
         {slides.map((group, idx) => (
           <Carousel.Item key={idx}>
             <div className="d-flex gap-2">
@@ -54,9 +54,9 @@ function SectionCarousel({ title, search }) {
 export default function CarouselSection() {
   return (
     <div className="container-fluid px-4">
-      <SectionCarousel title="Star Movies" search="star" />
-      <SectionCarousel title="Love Movies" search="love" />
-      <SectionCarousel title="Man Movies" search="man" />
+      <SectionCarousel title="Magic Movies" search="Harry Potter" />
+      <SectionCarousel title="Fantasy Movies" search="Lord of the Rings" />
+      <SectionCarousel title="Horror Movies" search="The Exorcist" />
     </div>
   );
 }

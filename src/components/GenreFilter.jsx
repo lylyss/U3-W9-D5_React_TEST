@@ -41,14 +41,7 @@ export default function GenreFilter({ genre, setGenre }) {
               : "Genere"}
           </span>
         </Dropdown.Toggle>
-        <Dropdown.Menu
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.93)",
-            border: "1px solid #ffffff",
-            color: "#ffffff",
-            borderRadius: 0,
-          }}
-        >
+        <Dropdown.Menu>
           <Dropdown.Item eventKey="star">Drama</Dropdown.Item>
           <Dropdown.Item eventKey="comedy">Comedy</Dropdown.Item>
           <Dropdown.Item eventKey="fantasy">Fantasy</Dropdown.Item>

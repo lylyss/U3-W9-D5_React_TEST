@@ -3,10 +3,10 @@ import { Navbar, Nav, Form, FormControl, Button, Dropdown } from "react-bootstra
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
 
-export default function MainHeader() {
+export default function MainHeader({ onAccountClick }) {
   return (
     <>
-      <Navbar bg="black" variant="dark" expand="lg" className="px-4">
+      <Navbar bg="black" variant="dark" expand="lg" className="px-4 py-0">
         <Navbar.Brand href="#">
           <img src="src/assets/netflix_logo.png" height="40" alt="Netflix Logo" />
         </Navbar.Brand>
@@ -29,7 +29,7 @@ export default function MainHeader() {
                 <img src="src/assets/avatar.png" width="32" height="32" alt="Profile" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="account-edit-profile-page.html">Account</Dropdown.Item>
+                <Dropdown.Item onClick={onAccountClick}>Account</Dropdown.Item>
                 <Dropdown.Item href="settings.html">Settings</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="#">Log out</Dropdown.Item>

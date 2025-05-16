@@ -8,6 +8,7 @@ import MainFooter from "./components/MainFooter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripLines, faThLarge } from "@fortawesome/free-solid-svg-icons";
 import GenreFilter from "./components/GenreFilter";
+import AccountPage from "./components/AccountPage";
 
 const fetchMoviesBySearch = async (query) => {
   const apiKey = "fc9f1c61";
@@ -32,6 +33,7 @@ function App() {
   const [view, setView] = useState("carousel");
   const [movies, setMovies] = useState([]);
   const [genre, setGenre] = useState("star");
+  const [showAccount, setShowAccount] = useState(false);
 
   useEffect(() => {
     fetchMoviesBySearch(genre).then(setMovies);
@@ -39,25 +41,26 @@ function App() {
 
   return (
     <>
-      <MainHeader />
-      <div className="container-fluid px-4 py-3 d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-center">
-          <h2 className="mb-0 me-3 text-white">TV Shows</h2>
-          <GenreFilter genre={genre} setGenre={setGenre} />
+      <MainHeader onAccountClick={() => setShowAccount(true)} />
+      <div style={{ display: showAccount ? "none" : "block" }}>
+        <div className="container-fluid px-4 py-3 d-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-center">
+            <h2 className="mb-0 me-3 text-white">TV Shows</h2>
+            <GenreFilter genre={genre} setGenre={setGenre} />
+          </div>
+          <div className="btn-group">
+            <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
+              <FontAwesomeIcon icon={faGripLines} />
+            </button>
+            <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
+              <FontAwesomeIcon icon={faThLarge} />
+            </button>
+          </div>
         </div>
-        <div className="btn-group">
-          <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
-            <FontAwesomeIcon icon={faGripLines} />
-          </button>
-          <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
-            <FontAwesomeIcon icon={faThLarge} />
-          </button>
-        </div>
+        {view === "carousel" ? <CarouselSection /> : <GridSection data={movies} />}
+        <MainFooter />
       </div>
-
-      {view === "carousel" ? <CarouselSection /> : <GridSection data={movies} />}
-
-      <MainFooter />
+      {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function GenreFilter({ genre, setGenre }) {
           }}
         >
           <span style={{ color: "#ffffff" }}>
-            {genre === "star"
+            {genre === "genre"
               ? "Drama"
               : genre === "comedy"
               ? "Comedy"

@@ -1,9 +1,9 @@
 import React from "react";
-import { Navbar, Nav, Form, FormControl, Button, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Dropdown, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function MainHeader({ onAccountClick }) {
+export default function MainHeader({ onAccountClick, onSearchClick }) {
   return (
     <>
       <Navbar bg="black" variant="dark" expand="lg" className="px-4 py-0">
@@ -19,9 +19,10 @@ export default function MainHeader({ onAccountClick }) {
             <Nav.Link href="#">My List</Nav.Link>
           </Nav>
           <div className="d-flex align-items-center ms-auto gap-3">
-            <a className="text-white text-decoration-none" href="#searchToggle">
-              <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#ffffff" }} />
-            </a>
+            {/* Bottone ricerca */}
+            <Button variant="link" className="p-0 m-0" style={{ color: "#ffffff" }} onClick={onSearchClick} aria-label="Cerca">
+              <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+            </Button>
             <span className="text-white">KIDS</span>
             <FontAwesomeIcon icon={faBell} style={{ color: "#ffffff" }} />
             <Dropdown align="end">
@@ -38,14 +39,6 @@ export default function MainHeader({ onAccountClick }) {
           </div>
         </Navbar.Collapse>
       </Navbar>
-
-      {/* Collapsible Search Bar */}
-      <div className="collapse bg-dark px-4 py-3" id="searchToggle">
-        <Form className="d-flex">
-          <FormControl type="search" placeholder="Search for titles..." className="me-2 bg-dark text-white border-secondary" aria-label="Search" />
-          <Button variant="outline-light">Search</Button>
-        </Form>
-      </div>
     </>
   );
 }

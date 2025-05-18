@@ -1,20 +1,17 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-export default function Nomination({ movies }) {
+export default function Nomination({ movies, onCardClick }) {
   return (
     <Container className="my-5">
       <h3 className="text-white mb-4">Nomination</h3>
+
+      <hr className="border-secondary mb-5" />
       <Row>
         {movies.slice(0, 5).map((movie) => (
           <Col key={movie.id} md={2} className="mb-4">
-            <Card bg="dark" text="light" className="h-100">
-              <Card.Img
-                variant="top"
-                src={movie.image}
-                alt={movie.title}
-                style={{ height: "300px", objectFit: "cover" }}
-              />
+            <Card bg="dark" text="light" className="h-100" style={{ cursor: "pointer" }} onClick={() => onCardClick(movie, "nomination")}>
+              <Card.Img variant="top" src={movie.image} alt={movie.title} style={{ height: "300px", objectFit: "cover" }} />
               <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
@@ -30,6 +27,7 @@ export default function Nomination({ movies }) {
           </Col>
         ))}
       </Row>
+      <hr className="border-secondary my-5" />
     </Container>
   );
 }

@@ -12,6 +12,7 @@ import AccountPage from "./components/AccountPage";
 import Nomination from "./components/Nomination";
 import SearchBar from "./components/SearchBar";
 import CardMoveInfo from "./components/CardMoveInfo";
+import Settings from "./components/Settings";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 
 const fetchMoviesBySearch = async (query) => {
@@ -42,7 +43,7 @@ const fetchMoviesBySearch = async (query) => {
 function SearchPage({ movies, onBack, onSearchKeyword, onCardClick }) {
   return (
     <Container className="my-4">
-      <Button variant="secondary" className="mb-4" onClick={onBack}>
+      <Button variant="secondary" className=" rounded-0" onClick={onBack}>
         Back
       </Button>
       <div className="mb-4">
@@ -82,6 +83,7 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     fetchMoviesBySearch(genre).then(setMovies);
@@ -171,60 +173,78 @@ function App() {
 
   return (
     <>
-      <MainHeader onAccountClick={() => setShowAccount(true)} onSearchClick={handleSearchClick} />
+      <MainHeader
+        onAccountClick={() => setShowAccount(true)}
+        onSearchClick={handleSearchClick}
+        onSettingsClick={() => {
+          setShowSettings(true);
+          setShowAccount(false);
+          setShowNomination(false);
+          setShowCardInfo(false);
+          setShowSearch(false);
+        }}
+      />
 
-      {/* Pagina Card Info */}
-      <div style={{ display: showCardInfo ? "block" : "none" }}>
-        {selectedMovie && (
-          <div className="container my-4">
-            <Button className="mb-4" variant="secondary" onClick={handleBackFromCardInfo}>
+      {/* Settings */}
+      <div className={showSettings ? "" : "d-none"}>
+        <Settings show={showSettings} onClose={() => setShowSettings(false)} />
+      </div>
+
+      {/* Tutti gli altri componenti */}
+      <div className={showSettings ? "d-none" : ""}>
+        {/* Pagina Card Info */}
+        <div style={{ display: showCardInfo ? "block" : "none" }}>
+          {selectedMovie && (
+            <div className="container my-4">
+              <Button className="mb-4" variant="secondary" onClick={handleBackFromCardInfo}>
+                Back
+              </Button>
+              <CardMoveInfo movie={selectedMovie} onBack={handleBackFromCardInfo} />
+            </div>
+          )}
+        </div>
+
+        {/* Pagina Search */}
+        <div style={{ display: showSearch && !showCardInfo ? "block" : "none" }}>
+          <SearchPage movies={movies} onBack={handleBackFromSearch} onSearchKeyword={handleSearchKeyword} onCardClick={handleCardClick} />
+        </div>
+
+        {/* Pagina Nomination */}
+        <div style={{ display: showNomination && !showCardInfo ? "block" : "none" }}>
+          <div className="container my-4 mb-0 ">
+            <button className="btn btn-secondary m-0" onClick={() => setShowNomination(false)}>
               Back
-            </Button>
-            <CardMoveInfo movie={selectedMovie} onBack={handleBackFromCardInfo} />
+            </button>
           </div>
-        )}
-      </div>
-
-      {/* Pagina Search */}
-      <div style={{ display: showSearch && !showCardInfo ? "block" : "none" }}>
-        <SearchPage movies={movies} onBack={handleBackFromSearch} onSearchKeyword={handleSearchKeyword} onCardClick={handleCardClick} />
-      </div>
-
-      {/* Pagina Nomination */}
-      <div style={{ display: showNomination && !showCardInfo ? "block" : "none" }}>
-        <div className="container my-4">
-          <button className="btn btn-secondary mb-4" onClick={() => setShowNomination(false)}>
-            Back
-          </button>
+          <Nomination movies={movies} onCardClick={handleCardClick} />
         </div>
-        <Nomination movies={movies} onCardClick={handleCardClick} />
-      </div>
 
-      {/* Pagina principale */}
-      <div style={{ display: !showSearch && !showNomination && !showCardInfo && !showAccount ? "block" : "none" }}>
-        <div className="container-fluid px-4 py-3 d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <h2 className="mb-0 me-3 text-white">TV Shows</h2>
-            <GenreFilter genre={genre} setGenre={setGenre} />
+        {/* Pagina principale */}
+        <div style={{ display: !showSearch && !showNomination && !showCardInfo && !showAccount ? "block" : "none" }}>
+          <div className="container-fluid px-4 py-3 d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center">
+              <h2 className="mb-0 me-3 text-white">TV Shows</h2>
+              <GenreFilter genre={genre} setGenre={setGenre} />
+            </div>
+            <button onClick={handleNominationClick} className="btn btn-danger rounded fw-bold ms-2 nomination-btn">
+              Nomination Awards 2025
+            </button>
+            <div className="btn-group">
+              <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
+                <FontAwesomeIcon icon={faGripLines} />
+              </button>
+              <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
+                <FontAwesomeIcon icon={faThLarge} />
+              </button>
+            </div>
           </div>
-          <div className="btn-group">
-            <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
-              <FontAwesomeIcon icon={faGripLines} />
-            </button>
-            <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
-              <FontAwesomeIcon icon={faThLarge} />
-            </button>
-            <button onClick={handleNominationClick} className="btn btn-warning rounded-0 fw-bold ms-2">
-              Nomination
-            </button>
-          </div>
+          {view === "carousel" ? <CarouselSection /> : <GridSection data={movies} />}
+          <MainFooter />
         </div>
-        {view === "carousel" ? <CarouselSection /> : <GridSection data={movies} />}
-        <MainFooter />
-      </div>
 
-      {/* Account Page */}
-      {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
+        {/* Account Page */}
+        {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
+      </div>
     </>
   );
 }

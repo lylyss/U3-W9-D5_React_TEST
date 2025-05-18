@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
+import CardImageWithLogo from "./CardImageWithLogo";
 
 // Funzione per cercare film tramite parola chiave
 const fetchMoviesBySearch = async (query) => {
@@ -16,12 +17,18 @@ const fetchMoviesBySearch = async (query) => {
         id: movie.imdbID,
         image: movie.Poster,
         title: movie.Title,
+        year: movie.Year,
+        genre: movie.Genre,
+        country: movie.Country,
+        awards: movie.Awards,
+        language: movie.Language,
+        runtime: movie.Runtime,
       }));
   }
   return [];
 };
 
-function SectionCarousel({ title, search }) {
+function SectionCarousel({ title, search, onCardClick }) {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -39,9 +46,38 @@ function SectionCarousel({ title, search }) {
       <Carousel indicators={false} interval={4000}>
         {slides.map((group, idx) => (
           <Carousel.Item key={idx}>
-            <div className="d-flex gap-2">
+            <div
+              className="d-flex justify-content-center gap-2"
+              style={{
+                flexWrap: "nowrap",
+                overflow: "hidden",
+                width: "100%",
+              }}
+            >
               {group.map((item) => (
-                <img key={item.id} src={item.image} className="img-fluid" alt={item.title} style={{ maxHeight: "300px" }} />
+                <div
+                  key={item.id}
+                  className="carousel-movie-card"
+                  style={{
+                    flex: "0 0 170px",
+                    maxWidth: "170px",
+                    minWidth: "170px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => onCardClick(item, "carousel")}
+                >
+                  <CardImageWithLogo
+                    src={item.image}
+                    alt={item.title}
+                    height={280}
+                    style={{
+                      width: "100%",
+                      height: "280px",
+                      objectFit: "cover",
+                      borderRadius: 8,
+                    }}
+                  />
+                </div>
               ))}
             </div>
           </Carousel.Item>
@@ -51,12 +87,12 @@ function SectionCarousel({ title, search }) {
   );
 }
 
-export default function CarouselSection() {
+export default function CarouselSection({ onCardClick }) {
   return (
     <div className="container-fluid px-4">
-      <SectionCarousel title="Magic Movies" search="Harry Potter" />
-      <SectionCarousel title="Fantasy Movies" search="Lord of the Rings" />
-      <SectionCarousel title="Horror Movies" search="The Exorcist" />
+      <SectionCarousel title="Magic Movies" search="Harry Potter" onCardClick={onCardClick} />
+      <SectionCarousel title="Fantasy Movies" search="Lord of the Rings" onCardClick={onCardClick} />
+      <SectionCarousel title="Horror Movies" search="The Exorcist" onCardClick={onCardClick} />
     </div>
   );
 }

@@ -1,3 +1,31 @@
 body {
   background-color: #1a1919;
 }
+
+.nomination-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url("src/assets/bg.info.netflix.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.nomination-btn {
+  background-image: url("src/assets/netflix-logo-icon.svg");
+  background-repeat: no-repeat;
+  background-position: 16px center;
+  background-size: 28px 28px;
+  padding-left: 56px;
+  background-color: #57030700 !important;
+  color: white !important;
+  border: none;
+  min-height: 48px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0px 0px 9px 5px rgb(104, 1, 1);
+}
+.nomination-btn:hover,
+.nomination-btn:focus {
+  background-color: #6b0005 !important;
+}

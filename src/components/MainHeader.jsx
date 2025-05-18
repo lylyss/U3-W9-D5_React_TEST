@@ -3,7 +3,7 @@ import { Navbar, Nav, Dropdown, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function MainHeader({ onAccountClick, onSearchClick }) {
+export default function MainHeader({ onAccountClick, onSearchClick, onSettingsClick }) {
   return (
     <>
       <Navbar bg="black" variant="dark" expand="lg" className="px-4 py-0">
@@ -31,7 +31,7 @@ export default function MainHeader({ onAccountClick, onSearchClick }) {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={onAccountClick}>Account</Dropdown.Item>
-                <Dropdown.Item href="#">Settings</Dropdown.Item>
+                <Dropdown.Item onClick={onSettingsClick}>Settings</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="#">Log out</Dropdown.Item>
               </Dropdown.Menu>

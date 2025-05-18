@@ -8,16 +8,15 @@ export default function GenreFilter({ genre, setGenre }) {
         <Dropdown.Toggle
           variant="dark"
           id="genre-dropdown"
-          size="sm"
-          className="ms-2"
+          className="ms-2 p-1"
           style={{
             backgroundColor: "transparent",
-            border: "1px solid #fff",
+            border: "1px solid #ffffff",
             color: "#ffffff",
             borderRadius: 0,
           }}
         >
-          <span style={{ color: "#fff" }}>
+          <span style={{ color: "#ffffff" }}>
             {genre === "star"
               ? "Drama"
               : genre === "comedy"

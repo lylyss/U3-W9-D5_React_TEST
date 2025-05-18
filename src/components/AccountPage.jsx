@@ -107,11 +107,7 @@ export default function AccountPage({ onClose }) {
                     <Form.Label className="mb-0" htmlFor="languageSelect">
                       Language:
                     </Form.Label>
-                    <Form.Select
-                      id="languageSelect"
-                      className="text-white border rounded-0 py-0"
-                      style={{ width: "auto", minWidth: 150, backgroundColor: "transparent" }}
-                    >
+                    <Form.Select id="languageSelect" className="text-white border rounded-0 py-0 bg-secondary " style={{ width: "auto", minWidth: 150 }}>
                       <option>English</option>
                       <option>Italiano</option>
                       <option>Espanol</option>

@@ -30,7 +30,7 @@ export default function MainHeader({ onAccountClick }) {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={onAccountClick}>Account</Dropdown.Item>
-                <Dropdown.Item href="settings.html">Settings</Dropdown.Item>
+                <Dropdown.Item href="#">Settings</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="#">Log out</Dropdown.Item>
               </Dropdown.Menu>

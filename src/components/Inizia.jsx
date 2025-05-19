@@ -65,7 +65,7 @@ export default function Inizia({ onAccedi }) {
               zIndex: 2,
               padding: "1rem 2.5rem",
               fontSize: "clamp(1rem, 4vw, 1.5rem)",
-              borderRadius: "8px",
+              borderRadius: "0px",
               border: "none",
               background: "#e50914",
               color: "#fff",

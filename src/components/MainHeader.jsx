@@ -33,7 +33,14 @@ export default function MainHeader({ onAccountClick, onSearchClick, onSettingsCl
                 <Dropdown.Item onClick={onAccountClick}>Account</Dropdown.Item>
                 <Dropdown.Item onClick={onSettingsClick}>Settings</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item href="#">Log out</Dropdown.Item>
+                <Dropdown.Item
+                  href="#"
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                >
+                  Log out
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

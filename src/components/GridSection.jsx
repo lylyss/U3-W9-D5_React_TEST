@@ -2,12 +2,25 @@ import React from "react";
 import { Row, Col, Card, Container } from "react-bootstrap";
 import CardImageWithLogo from "./CardImageWithLogo";
 
-export default function GridSection({ data, onCardClick }) {
+export default function GridSection({ data, onCardClick, genre }) {
+  const filteredData =
+    genre && genre !== "All"
+      ? data.filter(
+          (item) =>
+            item.genre &&
+            item.genre
+              .toLowerCase()
+              .split(",")
+              .map((g) => g.trim())
+              .includes(genre.toLowerCase())
+        )
+      : data;
+
   return (
     <Container>
       <h3 className="text-white my-4">Tutti i Film</h3>
       <Row>
-        {data.map((item) => (
+        {filteredData.map((item) => (
           <Col xs={12} sm={6} md={4} lg={3} className="mb-4 d-flex" key={item.id}>
             <Card
               className="border-0 rounded-0 bg-dark text-white h-100 w-100"

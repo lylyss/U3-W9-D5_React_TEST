@@ -6,7 +6,7 @@ import CarouselSection from "./components/CarouselSection";
 import GridSection from "./components/GridSection";
 import MainFooter from "./components/MainFooter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faThLarge } from "@fortawesome/free-solid-svg-icons";
+import { faGripLines, faThLarge, faAward } from "@fortawesome/free-solid-svg-icons";
 import GenreFilter from "./components/GenreFilter";
 import AccountPage from "./components/AccountPage";
 import Nomination from "./components/Nomination";
@@ -208,7 +208,7 @@ export default function App() {
         <div style={{ display: showCardInfo ? "block" : "none" }}>
           {selectedMovie && (
             <div className="container my-4">
-              <Button className="mb-4" variant="secondary" onClick={handleBackFromCardInfo}>
+              <Button className="mb-4" variant="secondary rounded-0" onClick={handleBackFromCardInfo}>
                 Back
               </Button>
               <CardMoveInfo movie={selectedMovie} onBack={handleBackFromCardInfo} />
@@ -224,7 +224,7 @@ export default function App() {
         {/* Pagina Nomination */}
         <div style={{ display: showNomination && !showCardInfo ? "block" : "none" }}>
           <div className="container my-4 mb-0 ">
-            <button className="btn btn-secondary m-0" onClick={() => setShowNomination(false)}>
+            <button className="btn btn-secondary m-0 rounded-0" onClick={() => setShowNomination(false)}>
               Back
             </button>
           </div>
@@ -233,21 +233,37 @@ export default function App() {
 
         {/* Pagina principale */}
         <div style={{ display: !showSearch && !showNomination && !showCardInfo && !showAccount ? "block" : "none" }}>
-          <div className="container-fluid px-4 py-3 d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-center">
-              <h2 className="mb-0 me-3 text-white">TV Shows</h2>
-              <GenreFilter genre={genre} setGenre={setGenre} />
-            </div>
-            <button onClick={handleNominationClick} className="btn btn-danger rounded fw-bold ms-2 nomination-btn">
-              Nomination Awards 2025
-            </button>
-            <div className="btn-group">
-              <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
-                <FontAwesomeIcon icon={faGripLines} />
-              </button>
-              <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
-                <FontAwesomeIcon icon={faThLarge} />
-              </button>
+          <div className="container-fluid px-4 py-3">
+            <div className="row align-items-center">
+              <div className="col-12 col-md-auto d-flex align-items-center mb-3 mb-md-0">
+                <h2 className="mb-0 me-3 text-white">TV Shows</h2>
+                <GenreFilter genre={genre} setGenre={setGenre} />
+              </div>
+              <div className="col-12 col-md d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-2">
+                <div className="w-100 d-flex flex-row flex-wrap flex-md-row align-items-center justify-content-between gap-2">
+                  {/* Nomination button */}
+                  <div className="d-flex justify-content-center mb-2 mb-md-0" style={{ flex: 1 }}>
+                    <button
+                      onClick={handleNominationClick}
+                      className="btn btn-danger rounded fw-bold nomination-btn d-flex align-items-center justify-content-center"
+                      style={{ gap: "0.5rem", width: "100%", maxWidth: 220 }}
+                    >
+                      <FontAwesomeIcon icon={faAward} />
+                      <span className="d-none d-sm-inline">Awards 2025</span>
+                      <span className="d-inline d-sm-none">Nomination</span>
+                    </button>
+                  </div>
+                  {/* Layout buttons */}
+                  <div className="btn-group d-flex flex-row justify-content-md-end justify-content-center mt-0 mt-md-0" style={{ flex: 1, maxWidth: 220 }}>
+                    <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
+                      <FontAwesomeIcon icon={faGripLines} />
+                    </button>
+                    <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
+                      <FontAwesomeIcon icon={faThLarge} />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           {view === "carousel" ? <CarouselSection onCardClick={handleCardClick} /> : <GridSection data={movies} onCardClick={handleCardClick} />}
@@ -257,6 +273,49 @@ export default function App() {
         {/* Account Page */}
         {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
       </div>
+      <style>
+        {`
+  @media (max-width: 576px) {
+    .nomination-btn {
+      width: 100% !important;
+      justify-content: center !important;
+      margin-bottom: 0 !important;
+    }
+    .btn-group {
+      width: 100% !important;
+      flex-direction: row !important;
+      margin-top: 0 !important;
+      justify-content: center !important;
+    }
+    .w-100.d-flex.flex-row.flex-wrap.flex-md-row.align-items-center.justify-content-between.gap-2 {
+      flex-direction: row !important;
+      gap: 0.5rem !important;
+    }
+    .col-12.col-md.d-flex {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0.5rem !important;
+    }
+  }
+  @media (min-width: 577px) {
+    .nomination-btn {
+      width: auto !important;
+      margin-bottom: 0 !important;
+    }
+    .btn-group {
+      width: auto !important;
+      flex-direction: row !important;
+      margin-top: 0 !important;
+      justify-content: flex-end !important;
+    }
+    .col-12.col-md.d-flex {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+    }
+  }
+`}
+      </style>
     </>
   );
 }

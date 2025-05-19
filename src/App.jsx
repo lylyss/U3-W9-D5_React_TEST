@@ -13,6 +13,7 @@ import Nomination from "./components/Nomination";
 import SearchBar from "./components/SearchBar";
 import CardMoveInfo from "./components/CardMoveInfo";
 import Settings from "./components/Settings";
+import Inizia from "./components/Inizia";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 
 const fetchMoviesBySearch = async (query) => {
@@ -52,7 +53,7 @@ function SearchPage({ movies, onBack, onSearchKeyword, onCardClick }) {
       <Row>
         {movies.map((movie) => (
           <Col key={movie.id} md={3} className="mb-4">
-            <Card bg="dark" text="light" className="h-100" style={{ cursor: "pointer" }} onClick={() => onCardClick(movie)}>
+            <Card bg="dark" text="light" className="h-100" style={{ cursor: "pointer" }} onClick={() => onCardClick(movie, "carousel")}>
               <Card.Img variant="top" src={movie.image} alt={movie.title} style={{ height: "300px", objectFit: "cover" }} />
               <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
@@ -71,7 +72,7 @@ function SearchPage({ movies, onBack, onSearchKeyword, onCardClick }) {
   );
 }
 
-function App() {
+export default function App() {
   const [view, setView] = useState("carousel");
   const [movies, setMovies] = useState([]);
   const [genre, setGenre] = useState("star");
@@ -82,8 +83,9 @@ function App() {
   const [showCardInfo, setShowCardInfo] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [lastPage, setLastPage] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [showIntro, setShowIntro] = useState(true); // Mostra la schermata Inizia
+  const [showVideo, setShowVideo] = useState(false); // Mostra il video intro
 
   useEffect(() => {
     fetchMoviesBySearch(genre).then(setMovies);
@@ -95,11 +97,50 @@ function App() {
     }
   }, [showSearch, searchKeyword]);
 
-  useEffect(() => {
-    /* Intro caricamento Netflix kikka */
-    const timer = setTimeout(() => setLoading(false), 4000); // 4 secondi
-    return () => clearTimeout(timer);
-  }, []);
+  // Gestione sequenza: Inizia -> Video -> App
+  if (showIntro) {
+    return (
+      <Inizia
+        onAccedi={() => {
+          setShowIntro(false);
+          setShowVideo(true);
+        }}
+      />
+    );
+  }
+
+  if (showVideo) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "#000",
+          zIndex: 9999,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
+        <video
+          src="src/assets/Netflix Intro 1080p (Highest Quality)_1080p.mp4"
+          autoPlay
+          muted
+          playsInline
+          onEnded={() => setShowVideo(false)}
+          style={{
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      </div>
+    );
+  }
 
   const handleSearchClick = () => {
     setShowSearch(true);
@@ -122,13 +163,12 @@ function App() {
     setShowCardInfo(false);
   };
 
-  const handleCardClick = (movie, from) => {
+  const handleCardClick = (movie, source) => {
     setSelectedMovie(movie);
     setShowCardInfo(true);
     setShowSearch(false);
     setShowNomination(false);
-    setLastPage(from);
-    /* "search" o "nomination" */
+    setLastPage(source);
   };
 
   const handleBackFromCardInfo = () => {
@@ -138,41 +178,13 @@ function App() {
     else if (lastPage === "nomination") setShowNomination(true);
   };
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "#000",
-          zIndex: 9999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        <video
-          src="src/assets/Netflix Intro 1080p (Highest Quality)_1080p.mp4"
-          autoPlay
-          muted
-          playsInline
-          onEnded={() => setLoading(false)}
-          style={{
-            width: "100vw",
-            height: "100vh",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      </div>
-    );
-  }
+  const handleBackFromSettings = () => {
+    setShowSettings(false);
+  };
 
   return (
     <>
+      {/* Tutto il resto come già scritto */}
       <MainHeader
         onAccountClick={() => setShowAccount(true)}
         onSearchClick={handleSearchClick}
@@ -187,7 +199,7 @@ function App() {
 
       {/* Settings */}
       <div className={showSettings ? "" : "d-none"}>
-        <Settings show={showSettings} onClose={() => setShowSettings(false)} />
+        <Settings show={showSettings} onBack={handleBackFromSettings} />
       </div>
 
       {/* Tutti gli altri componenti */}
@@ -238,7 +250,7 @@ function App() {
               </button>
             </div>
           </div>
-          {view === "carousel" ? <CarouselSection /> : <GridSection data={movies} />}
+          {view === "carousel" ? <CarouselSection onCardClick={handleCardClick} /> : <GridSection data={movies} onCardClick={handleCardClick} />}
           <MainFooter />
         </div>
 
@@ -248,5 +260,3 @@ function App() {
     </>
   );
 }
-
-export default App;

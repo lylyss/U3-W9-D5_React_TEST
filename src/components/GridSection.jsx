@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Card, Container } from "react-bootstrap";
 import CardImageWithLogo from "./CardImageWithLogo";
 
-export default function GridSection({ data }) {
+export default function GridSection({ data, onCardClick }) {
   return (
     <Container>
       <h3 className="text-white my-4">Tutti i Film</h3>
@@ -16,7 +16,9 @@ export default function GridSection({ data }) {
                 maxHeight: "480px",
                 display: "flex",
                 flexDirection: "column",
+                cursor: "pointer",
               }}
+              onClick={() => onCardClick(item)}
             >
               <div
                 style={{

@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
 
-export default function Settings({ show }) {
+export default function Settings({ show, onBack }) {
   const [showEmail, setShowEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
 
   return (
     <div style={{ display: show ? "block" : "none", background: "white", minHeight: "100vh" }}>
-      <main className="container mt-0 text-custom-color-gray">
+      <main className="container mt-0 ">
         <Container style={{ maxWidth: 850 }}>
           <div className="mt-4 px-3">
+            {/* Bottone Back */}
+            <Button variant="secondary" className="mb-3 rounded-0" onClick={onBack}>
+              Back
+            </Button>
             <h1 className="text-center text-md-start text-black fs-2">Account</h1>
             <div className="border-bottom border-setting mb-3 mt-3"></div>
 
             {/* Membership & Billing */}
             <Row>
               <Col md={4} className="d-flex justify-content-center flex-column d-md-block">
-                <h3 className="setting-color text-center text-md-start fs-5">MEMBERSHIP & BILLING</h3>
+                <h3 className=" text-center text-md-start fs-5">MEMBERSHIP & BILLING</h3>
                 <Button className="px-4 bg-custom-color-btn border border-2 border-end-0 border-start-0 border-top-0 fs-6">Cancel Membership</Button>
               </Col>
               <Col md={8} className="d-flex flex-column flex-md-row justify-content-between border-bottom border-setting mt-4 mt-md-0">

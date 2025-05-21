@@ -2,6 +2,8 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 
 export default function GenreFilter({ genre, setGenre }) {
+  const genres = ["All", "Drama", "Fantasy", "Comedy", "Action", "Horror", "Romance", "Thriller", "Adventure", "Crime", "Animation"];
+
   return (
     <div className="d-flex align-items-center">
       <Dropdown onSelect={(eventKey) => setGenre(eventKey)}>
@@ -41,16 +43,11 @@ export default function GenreFilter({ genre, setGenre }) {
           </span>
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item eventKey="star">Drama</Dropdown.Item>
-          <Dropdown.Item eventKey="comedy">Comedy</Dropdown.Item>
-          <Dropdown.Item eventKey="fantasy">Fantasy</Dropdown.Item>
-          <Dropdown.Item eventKey="action">Action</Dropdown.Item>
-          <Dropdown.Item eventKey="horror">Horror</Dropdown.Item>
-          <Dropdown.Item eventKey="romance">Romance</Dropdown.Item>
-          <Dropdown.Item eventKey="thriller">Thriller</Dropdown.Item>
-          <Dropdown.Item eventKey="adventure">Adventure</Dropdown.Item>
-          <Dropdown.Item eventKey="crime">Crime</Dropdown.Item>
-          <Dropdown.Item eventKey="animation">Animation</Dropdown.Item>
+          {genres.map((g) => (
+            <Dropdown.Item key={g} eventKey={g} onClick={() => setGenre(g)}>
+              {g}
+            </Dropdown.Item>
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </div>

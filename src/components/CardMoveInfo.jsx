@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Form, Carousel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlayCircle, faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import AddComment from "./AddComment";
+import ListComments from "./ListComments";
 
 async function fetchMovieById(imdbID) {
   const apiKey = "fc9f1c61";
@@ -31,7 +31,7 @@ async function fetchRelatedMovies(title) {
   const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(title.split(" ")[0])}&type=movie`);
   const data = await res.json();
   if (data.Response === "True") {
-    /* Prendi max 10 correlati diversi dal film principale */
+    // Limita a 10 film correlati
     return data.Search.slice(0, 10).map((movie) => ({
       id: movie.imdbID,
       title: movie.Title,
@@ -43,9 +43,6 @@ async function fetchRelatedMovies(title) {
 }
 
 export default function CardMoveInfo({ movie, onCardClick }) {
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [comment, setComment] = useState("");
   const [related, setRelated] = useState([]);
   const [movieDetails, setMovieDetails] = useState(null);
 
@@ -68,6 +65,10 @@ export default function CardMoveInfo({ movie, onCardClick }) {
 
   const details = movieDetails || movie;
 
+  const handleCommentAdded = (newComment) => {
+    console.log("Nuovo commento aggiunto:", newComment);
+  };
+
   return (
     <Container className="my-5 bg-dark rounded p-4 shadow-lg nomination-bg" style={{ minHeight: "100vh", width: "100%" }}>
       <Row>
@@ -84,22 +85,6 @@ export default function CardMoveInfo({ movie, onCardClick }) {
                 display: "block",
               }}
             />
-            <Button
-              variant="light"
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                borderRadius: "50%",
-                padding: 0,
-                border: "none",
-                background: "rgba(0,0,0,0.5)",
-              }}
-              disabled
-            >
-              <FontAwesomeIcon icon={faPlayCircle} size="3x" style={{ color: "#ffffff" }} />
-            </Button>
           </div>
         </Col>
         <Col md={7} className="text-white">
@@ -114,68 +99,16 @@ export default function CardMoveInfo({ movie, onCardClick }) {
           </p>
           <hr className="border-secondary" />
 
-          <div>
-            <strong>Rating IMDb:</strong> {movieDetails && movieDetails.imdbRating ? `${movieDetails.imdbRating} / 10` : "N/A"}
-          </div>
-          {movieDetails && Array.isArray(movieDetails.Ratings) && movieDetails.Ratings.length > 0 && (
-            <div className="mt-2">
-              <strong>Altri Ratings:</strong>
-              <ul className="mb-0">
-                {movieDetails.Ratings.map((r, idx) => (
-                  <li key={idx}>
-                    {r.Source}: {r.Value}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {/* Richiama il componente AddComment */}
+          <AddComment movieId={details.id} onCommentAdded={handleCommentAdded} />
 
-          <hr className="border-secondary" />
-          <div>
-            <h5 className="mb-2">Vota il film:</h5>
-            <div>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FontAwesomeIcon
-                  key={star}
-                  icon={star <= (hover || rating) ? faStarSolid : faStarRegular}
-                  style={{ color: "#FFD700", cursor: "pointer", fontSize: 28 }}
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHover(star)}
-                  onMouseLeave={() => setHover(0)}
-                />
-              ))}
-            </div>
-            <Form className="mt-3">
-              <Form.Group controlId="comment">
-                <Form.Label>Lascia un commento:</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Scrivi qui il tuo commento..."
-                  className="bg-dark text-white"
-                />
-              </Form.Group>
-              <Button
-                variant="secondary"
-                className="mt-2"
-                type="button"
-                onClick={() => {
-                  alert("Feedback inviato!\n\nRating: " + rating + "\nCommento: " + comment);
-                  setComment("");
-                  setRating(0);
-                }}
-              >
-                Invia Feedback
-              </Button>
-            </Form>
-          </div>
+          {/* Richiama il componente ListComments */}
+          <ListComments movieId={details.id} />
         </Col>
       </Row>
 
       {/* Carosello correlati */}
-      {related.length > 0 && (
+      {related.length > 0 ? (
         <div className="mt-5">
           <h5 className="text-white mb-3">Film correlati</h5>
           <Carousel indicators={false} interval={5000}>
@@ -213,6 +146,8 @@ export default function CardMoveInfo({ movie, onCardClick }) {
             ))}
           </Carousel>
         </div>
+      ) : (
+        <p className="text-white">Nessun film correlato trovato.</p>
       )}
     </Container>
   );

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import TVShows from "./components/TvShows.jsx";
 import MainHeader from "./components/MainHeader";
+import MainFooter from "./components/MainFooter";
 import CarouselSection from "./components/CarouselSection";
 import GridSection from "./components/GridSection";
-import MainFooter from "./components/MainFooter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripLines, faThLarge, faAward } from "@fortawesome/free-solid-svg-icons";
 import GenreFilter from "./components/GenreFilter";
@@ -84,8 +86,8 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
-  const [showIntro, setShowIntro] = useState(true); // Mostra la schermata Inizia
-  const [showVideo, setShowVideo] = useState(false); // Mostra il video intro
+  const [showIntro, setShowIntro] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     fetchMoviesBySearch(genre).then(setMovies);
@@ -183,8 +185,7 @@ export default function App() {
   };
 
   return (
-    <>
-      {/* Tutto il resto come già scritto */}
+    <Router>
       <MainHeader
         onAccountClick={() => setShowAccount(true)}
         onSearchClick={handleSearchClick}
@@ -273,6 +274,12 @@ export default function App() {
         {/* Account Page */}
         {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
       </div>
+
+      <Routes>
+        <Route path="/" element={<div className="text-white">Home Page</div>} />
+        <Route path="/tv-shows" element={<TVShows />} />
+      </Routes>
+
       <style>
         {`
   @media (max-width: 576px) {
@@ -316,6 +323,6 @@ export default function App() {
   }
 `}
       </style>
-    </>
+    </Router>
   );
 }

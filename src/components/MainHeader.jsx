@@ -2,19 +2,24 @@ import React from "react";
 import { Navbar, Nav, Dropdown, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function MainHeader({ onAccountClick, onSearchClick, onSettingsClick }) {
   return (
     <>
       <Navbar bg="black" variant="dark" expand="lg" className="px-4 py-0">
-        <Navbar.Brand href="#">
+        <Navbar.Brand as={Link} to="/">
           <img src="src/assets/netflix_logo.png" height="40" alt="Netflix Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarContent" />
         <Navbar.Collapse id="navbarContent">
           <Nav className="ms-3">
-            <Nav.Link href="#">Home</Nav.Link>
-            <Nav.Link href="#">TV Shows</Nav.Link>
+            <Nav.Link as={Link} to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/tv-shows">
+              TV Shows
+            </Nav.Link>
             <Nav.Link href="#">Movies</Nav.Link>
             <Nav.Link href="#">My List</Nav.Link>
           </Nav>

@@ -1,0 +1,84 @@
+@keyframes logoResize {
+  0% {
+    width: 650px;
+    opacity: 0;
+  }
+  100% {
+    width: 400px;
+    opacity: 1;
+  }
+}
+
+.inizia-container {
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.inizia-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.inizia-logo {
+  width: 450px;
+  max-width: 80vw;
+  z-index: 2;
+  margin-bottom: 2rem;
+  position: relative;
+  transition: width 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.inizia-logo.animate {
+  animation: logoResize 2s ease-in-out forwards;
+}
+
+.inizia-logo:hover {
+  width: 650px;
+}
+
+.inizia-button-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.inizia-button {
+  position: relative;
+  z-index: 2;
+  padding: 1rem 2rem;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  border-radius: 0px;
+  border: none;
+  background: #e50914;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0px -1px 15px 6px rgba(131, 2, 2, 0.86);
+  width: clamp(140px, 40vw, 300px);
+  min-width: 120px;
+  max-width: 90vw;
+  cursor: pointer;
+}
+
+.inizia-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.inizia-button-container:hover .inizia-button-video {
+  opacity: 1;
+}

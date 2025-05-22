@@ -1,8 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import "../Inizia.css";
 
 export default function Inizia({ onAccedi }) {
   const videoRef = useRef(null);
   const [showButton, setShowButton] = useState(false);
+  const [animateLogo, setAnimateLogo] = useState(false);
+
+  useEffect(() => {
+    console.log("Animazione logo attivata");
+    setAnimateLogo(true);
+  }, []);
 
   const handleVideoEnd = () => {
     setShowButton(true);
@@ -13,21 +20,7 @@ export default function Inizia({ onAccedi }) {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        width: "100vw",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 9999,
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-      }}
-    >
+    <div className="inizia-container">
       <video
         ref={videoRef}
         src="src/assets/NETFLIX intro 2023 (logo+logotype).mp4"
@@ -35,51 +28,16 @@ export default function Inizia({ onAccedi }) {
         muted
         playsInline
         onEnded={handleVideoEnd}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          objectFit: "cover",
-          zIndex: 1,
-        }}
+        className="inizia-video"
       />
       {showButton && (
         <>
-          <img
-            src="src/assets/netflix_logo.png"
-            alt="Netflix"
-            style={{
-              width: "400px",
-              maxWidth: "80vw",
-              zIndex: 2,
-              marginBottom: "2rem",
-              position: "relative",
-            }}
-          />
-          <button
-            onClick={handleAccedi}
-            style={{
-              position: "relative",
-              zIndex: 2,
-              padding: "1rem 2.5rem",
-              fontSize: "clamp(1rem, 4vw, 1.5rem)",
-              borderRadius: "0px",
-              border: "none",
-              background: "#e50914",
-              color: "#fff",
-              fontWeight: "bold",
-              boxShadow: "8 2px 12px rgba(131, 2, 2, 0.86)",
-              cursor: "pointer",
-              transition: "background 0.2s",
-              width: "clamp(140px, 40vw, 300px)",
-              minWidth: "120px",
-              maxWidth: "90vw",
-            }}
-          >
-            ACCEDI
-          </button>
+          <img src="src/assets/netflix_logo.png" alt="Netflix" className={`inizia-logo ${animateLogo ? "animate" : ""}`} />
+          <div className="inizia-button-container">
+            <button onClick={handleAccedi} className="inizia-button">
+              ACCEDI
+            </button>
+          </div>
         </>
       )}
     </div>

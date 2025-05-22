@@ -1,328 +1,90 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-import TVShows from "./components/TvShows.jsx";
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Inizia from "./components/Inizia";
+import HomePage from "./components/HomePage";
 import MainHeader from "./components/MainHeader";
 import MainFooter from "./components/MainFooter";
-import CarouselSection from "./components/CarouselSection";
-import GridSection from "./components/GridSection";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faThLarge, faAward } from "@fortawesome/free-solid-svg-icons";
-import GenreFilter from "./components/GenreFilter";
+import Movies from "./components/Movies";
+import TvShows from "./components/TvShows";
 import AccountPage from "./components/AccountPage";
-import Nomination from "./components/Nomination";
-import SearchBar from "./components/SearchBar";
+import SearchPage from "./components/SearchPage";
 import CardMoveInfo from "./components/CardMoveInfo";
-import Settings from "./components/Settings";
-import Inizia from "./components/Inizia";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-
-const fetchMoviesBySearch = async (query) => {
-  const apiKey = "fc9f1c61";
-  const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${query}&type=movie`);
-  const data = await res.json();
-  if (data.Response === "True") {
-    const details = await Promise.all(
-      data.Search.map((movie) => fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}`).then((res) => res.json()))
-    );
-    return details
-      .filter((movie) => movie.Response !== "False")
-      .map((movie) => ({
-        id: movie.imdbID,
-        image: movie.Poster,
-        title: movie.Title,
-        year: movie.Year,
-        genre: movie.Genre,
-        country: movie.Country,
-        awards: movie.Awards,
-        language: movie.Language,
-        runtime: movie.Runtime,
-      }));
-  }
-  return [];
-};
-
-function SearchPage({ movies, onBack, onSearchKeyword, onCardClick }) {
-  return (
-    <Container className="my-4">
-      <Button variant="secondary" className=" rounded-0" onClick={onBack}>
-        Back
-      </Button>
-      <div className="mb-4">
-        <SearchBar onSearchKeyword={onSearchKeyword} />
-      </div>
-      <Row>
-        {movies.map((movie) => (
-          <Col key={movie.id} md={3} className="mb-4">
-            <Card bg="dark" text="light" className="h-100" style={{ cursor: "pointer" }} onClick={() => onCardClick(movie, "carousel")}>
-              <Card.Img variant="top" src={movie.image} alt={movie.title} style={{ height: "300px", objectFit: "cover" }} />
-              <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>
-                  <strong>Anno:</strong> {movie.year || " "}
-                </Card.Text>
-                <Card.Text>
-                  <strong>Genere:</strong> {movie.genre || " "} <br />
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
-}
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
-  const [view, setView] = useState("carousel");
-  const [movies, setMovies] = useState([]);
-  const [genre, setGenre] = useState("star");
-  const [showAccount, setShowAccount] = useState(false);
-  const [showNomination, setShowNomination] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState("star");
-  const [showCardInfo, setShowCardInfo] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [lastPage, setLastPage] = useState(null);
-  const [showSettings, setShowSettings] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
-  const [showVideo, setShowVideo] = useState(false);
+  const [view, setView] = useState("grid");
 
-  useEffect(() => {
-    fetchMoviesBySearch(genre).then(setMovies);
-  }, [genre]);
+  const [movies] = useState([
+    { id: 1, title: "Inception", image: "path/to/inception.jpg" },
+    { id: 2, title: "Interstellar", image: "path/to/interstellar.jpg" },
+    { id: 3, title: "The Dark Knight", image: "path/to/darkknight.jpg" },
+  ]);
+  const [genre, setGenre] = useState("All");
 
-  useEffect(() => {
-    if (showSearch && searchKeyword) {
-      fetchMoviesBySearch(searchKeyword).then(setMovies);
-    }
-  }, [showSearch, searchKeyword]);
-
-  // Gestione sequenza: Inizia -> Video -> App
-  if (showIntro) {
-    return (
-      <Inizia
-        onAccedi={() => {
-          setShowIntro(false);
-          setShowVideo(true);
-        }}
-      />
-    );
-  }
-
-  if (showVideo) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "#000",
-          zIndex: 9999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        <video
-          src="src/assets/Netflix Intro 1080p (Highest Quality)_1080p.mp4"
-          autoPlay
-          muted
-          playsInline
-          onEnded={() => setShowVideo(false)}
-          style={{
-            width: "100vw",
-            height: "100vh",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      </div>
-    );
-  }
-
-  const handleSearchClick = () => {
-    setShowSearch(true);
-    setShowNomination(false);
-    setShowCardInfo(false);
-    setSearchKeyword(genre);
+  const handleNominationClick = (movieId) => {
+    console.log("Nominate movie with id:", movieId);
   };
 
-  const handleBackFromSearch = () => {
-    setShowSearch(false);
+  const handleCardClick = (movieId) => {
+    console.log("Card clicked with id:", movieId);
   };
 
-  const handleSearchKeyword = (keyword) => {
-    setSearchKeyword(keyword);
-  };
-
-  const handleNominationClick = () => {
-    setShowNomination(true);
-    setShowSearch(false);
-    setShowCardInfo(false);
-  };
-
-  const handleCardClick = (movie, source) => {
-    setSelectedMovie(movie);
-    setShowCardInfo(true);
-    setShowSearch(false);
-    setShowNomination(false);
-    setLastPage(source);
-  };
-
-  const handleBackFromCardInfo = () => {
-    setShowCardInfo(false);
-    setSelectedMovie(null);
-    if (lastPage === "search") setShowSearch(true);
-    else if (lastPage === "nomination") setShowNomination(true);
-  };
-
-  const handleBackFromSettings = () => {
-    setShowSettings(false);
+  const handleAccedi = () => {
+    setShowIntro(false);
   };
 
   return (
     <Router>
+      {/* MainHeader sempre visibile */}
       <MainHeader
-        onAccountClick={() => setShowAccount(true)}
-        onSearchClick={handleSearchClick}
-        onSettingsClick={() => {
-          setShowSettings(true);
-          setShowAccount(false);
-          setShowNomination(false);
-          setShowCardInfo(false);
-          setShowSearch(false);
-        }}
+        onAccountClick={() => console.log("Account clicked")}
+        onSearchClick={() => console.log("Search clicked")}
+        onSettingsClick={() => console.log("Settings clicked")}
       />
 
-      {/* Settings */}
-      <div className={showSettings ? "" : "d-none"}>
-        <Settings show={showSettings} onBack={handleBackFromSettings} />
-      </div>
+      {/* Contenuto dinamico: Intro o Routes */}
+      {showIntro ? (
+        <Inizia onAccedi={handleAccedi} />
+      ) : (
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/movies"
+            element={
+              <Movies
+                view={view}
+                setView={setView}
+                movies={movies}
+                genre={genre}
+                setGenre={setGenre}
+                handleNominationClick={handleNominationClick}
+                handleCardClick={handleCardClick}
+              />
+            }
+          />
+          <Route
+            path="/tv-shows"
+            element={
+              <TvShows
+                tvShows={[
+                  { id: 1, title: "Breaking Bad", image: "path/to/image1.jpg" },
+                  { id: 2, title: "Stranger Things", image: "path/to/image2.jpg" },
+                  { id: 3, title: "The Crown", image: "path/to/image3.jpg" },
+                  { id: 4, title: "The Witcher", image: "path/to/image4.jpg" },
+                ]}
+              />
+            }
+          />
+          <Route path="/account" element={<AccountPage onClose={() => console.log("Account closed")} />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/card-info" element={<CardMoveInfo />} />
+        </Routes>
+      )}
 
-      {/* Tutti gli altri componenti */}
-      <div className={showSettings ? "d-none" : ""}>
-        {/* Pagina Card Info */}
-        <div style={{ display: showCardInfo ? "block" : "none" }}>
-          {selectedMovie && (
-            <div className="container my-4">
-              <Button className="mb-4" variant="secondary rounded-0" onClick={handleBackFromCardInfo}>
-                Back
-              </Button>
-              <CardMoveInfo movie={selectedMovie} onBack={handleBackFromCardInfo} />
-            </div>
-          )}
-        </div>
-
-        {/* Pagina Search */}
-        <div style={{ display: showSearch && !showCardInfo ? "block" : "none" }}>
-          <SearchPage movies={movies} onBack={handleBackFromSearch} onSearchKeyword={handleSearchKeyword} onCardClick={handleCardClick} />
-        </div>
-
-        {/* Pagina Nomination */}
-        <div style={{ display: showNomination && !showCardInfo ? "block" : "none" }}>
-          <div className="container my-4 mb-0 ">
-            <button className="btn btn-secondary m-0 rounded-0" onClick={() => setShowNomination(false)}>
-              Back
-            </button>
-          </div>
-          <Nomination movies={movies} onCardClick={handleCardClick} />
-        </div>
-
-        {/* Pagina principale */}
-        <div style={{ display: !showSearch && !showNomination && !showCardInfo && !showAccount ? "block" : "none" }}>
-          <div className="container-fluid px-4 py-3">
-            <div className="row align-items-center">
-              <div className="col-12 col-md-auto d-flex align-items-center mb-3 mb-md-0">
-                <h2 className="mb-0 me-3 text-white">TV Shows</h2>
-                <GenreFilter genre={genre} setGenre={setGenre} />
-              </div>
-              <div className="col-12 col-md d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-2">
-                <div className="w-100 d-flex flex-row flex-wrap flex-md-row align-items-center justify-content-between gap-2">
-                  {/* Nomination button */}
-                  <div className="d-flex justify-content-center mb-2 mb-md-0" style={{ flex: 1 }}>
-                    <button
-                      onClick={handleNominationClick}
-                      className="btn btn-danger rounded fw-bold nomination-btn d-flex align-items-center justify-content-center"
-                      style={{ gap: "0.5rem", width: "100%", maxWidth: 220 }}
-                    >
-                      <FontAwesomeIcon icon={faAward} />
-                      <span className="d-none d-sm-inline">Awards 2025</span>
-                      <span className="d-inline d-sm-none">Nomination</span>
-                    </button>
-                  </div>
-                  {/* Layout buttons */}
-                  <div className="btn-group d-flex flex-row justify-content-md-end justify-content-center mt-0 mt-md-0" style={{ flex: 1, maxWidth: 220 }}>
-                    <button onClick={() => setView("carousel")} className="btn btn-outline-light rounded-0">
-                      <FontAwesomeIcon icon={faGripLines} />
-                    </button>
-                    <button onClick={() => setView("grid")} className="btn btn-outline-light rounded-0">
-                      <FontAwesomeIcon icon={faThLarge} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {view === "carousel" ? <CarouselSection onCardClick={handleCardClick} /> : <GridSection data={movies} onCardClick={handleCardClick} />}
-          <MainFooter />
-        </div>
-
-        {/* Account Page */}
-        {showAccount && <AccountPage onClose={() => setShowAccount(false)} />}
-      </div>
-
-      <Routes>
-        <Route path="/" element={<div className="text-white">Home Page</div>} />
-        <Route path="/tv-shows" element={<TVShows />} />
-      </Routes>
-
-      <style>
-        {`
-  @media (max-width: 576px) {
-    .nomination-btn {
-      width: 100% !important;
-      justify-content: center !important;
-      margin-bottom: 0 !important;
-    }
-    .btn-group {
-      width: 100% !important;
-      flex-direction: row !important;
-      margin-top: 0 !important;
-      justify-content: center !important;
-    }
-    .w-100.d-flex.flex-row.flex-wrap.flex-md-row.align-items-center.justify-content-between.gap-2 {
-      flex-direction: row !important;
-      gap: 0.5rem !important;
-    }
-    .col-12.col-md.d-flex {
-      flex-direction: column !important;
-      align-items: stretch !important;
-      gap: 0.5rem !important;
-    }
-  }
-  @media (min-width: 577px) {
-    .nomination-btn {
-      width: auto !important;
-      margin-bottom: 0 !important;
-    }
-    .btn-group {
-      width: auto !important;
-      flex-direction: row !important;
-      margin-top: 0 !important;
-      justify-content: flex-end !important;
-    }
-    .col-12.col-md.d-flex {
-      flex-direction: row !important;
-      align-items: center !important;
-      gap: 0.5rem !important;
-    }
-  }
-`}
-      </style>
+      {/* MainFooter sempre visibile */}
+      <MainFooter />
     </Router>
   );
 }

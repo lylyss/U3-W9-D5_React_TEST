@@ -20,7 +20,9 @@ export default function MainHeader({ onAccountClick, onSearchClick, onSettingsCl
             <Nav.Link as={Link} to="/tv-shows">
               TV Shows
             </Nav.Link>
-            <Nav.Link href="#">Movies</Nav.Link>
+            <Nav.Link as={Link} to="/movies">
+              Movies
+            </Nav.Link>
             <Nav.Link href="#">My List</Nav.Link>
           </Nav>
           <div className="d-flex align-items-center ms-auto gap-3">

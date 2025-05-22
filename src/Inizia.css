@@ -21,6 +21,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background: url("../assets/bg_intro-netflix_cover.png") no-repeat center center;
+  background-size: cover;
 }
 
 .inizia-video {

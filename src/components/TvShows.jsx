@@ -2,6 +2,10 @@ import React from "react";
 import { Carousel, Container } from "react-bootstrap";
 
 export default function TvShows({ tvShows }) {
+  if (tvShows.length === 0) {
+    return <div className="text-white text-center">Nessun TV Show disponibile</div>;
+  }
+
   const chunkedTvShows = [];
   for (let i = 0; i < tvShows.length; i += 8) {
     chunkedTvShows.push(tvShows.slice(i, i + 8));

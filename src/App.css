@@ -1,5 +1,6 @@
 body {
-  background-color: #1a1919;
+  background-color: #1a1919; /* Colore scuro */
+  color: white; /* Testo bianco per contrasto */
 }
 
 .nomination-bg {
@@ -28,4 +29,46 @@ body {
 .nomination-btn:hover,
 .nomination-btn:focus {
   background-color: #6b0005 !important;
+}
+
+.page-container {
+  min-height: 100vh;
+  background-color: #1a1919; /* Colore scuro */
+  color: white; /* Testo bianco */
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #b20710;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+.search-result-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }

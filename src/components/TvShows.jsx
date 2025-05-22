@@ -1,26 +1,20 @@
 import React from "react";
-import { Carousel, Container } from "react-bootstrap";
+import { Container, Carousel } from "react-bootstrap";
 
 export default function TvShows({ tvShows }) {
-  if (tvShows.length === 0) {
+  if (!tvShows || tvShows.length === 0) {
     return <div className="text-white text-center">Nessun TV Show disponibile</div>;
   }
 
-  const chunkedTvShows = [];
-  for (let i = 0; i < tvShows.length; i += 8) {
-    chunkedTvShows.push(tvShows.slice(i, i + 8));
-  }
-
   return (
-    <Container className="my-5">
-      <h2 className="text-white mb-4">TV Shows</h2>
-      <Carousel indicators={false} interval={5000}>
-        {chunkedTvShows.map((group, index) => (
-          <Carousel.Item key={index}>
-            <div className="d-flex flex-wrap justify-content-center gap-3">
-              {group.map((show) => (
+    <div className="page-container">
+      <Container className="my-5">
+        <h2 className="text-white mb-4">TV Shows</h2>
+        <Carousel indicators={false} interval={5000}>
+          {tvShows.map((show, index) => (
+            <Carousel.Item key={index}>
+              <div className="d-flex flex-wrap justify-content-center gap-3">
                 <div
-                  key={show.id}
                   style={{
                     flex: "0 0 22%",
                     maxWidth: "22%",
@@ -42,11 +36,11 @@ export default function TvShows({ tvShows }) {
                     {show.title}
                   </div>
                 </div>
-              ))}
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    </Container>
+              </div>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      </Container>
+    </div>
   );
 }

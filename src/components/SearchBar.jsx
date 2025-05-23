@@ -3,7 +3,7 @@ import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function SearchBar({ onSearchClick, onSearchKeyword }) {
+export default function SearchBar({ movies, onSearchResults }) {
   const [searchInput, setSearchInput] = useState("");
 
   const handleInputChange = (e) => {
@@ -12,16 +12,18 @@ export default function SearchBar({ onSearchClick, onSearchKeyword }) {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (onSearchKeyword) {
-      onSearchKeyword(searchInput);
-    }
-    if (onSearchClick) {
-      onSearchClick();
+    if (searchInput.trim() === "") {
+      // Se il campo di ricerca è vuoto, mostra tutti i film
+      onSearchResults(movies);
+    } else {
+      // Filtra i film in base alla parola chiave
+      const filteredMovies = movies.filter((movie) => movie.title.toLowerCase().includes(searchInput.toLowerCase()));
+      onSearchResults(filteredMovies);
     }
   };
 
   return (
-    <Form className="d-flex" onSubmit={handleSearchSubmit}>
+    <Form className="d-flex mb-4" onSubmit={handleSearchSubmit}>
       <InputGroup>
         <FormControl
           type="search"

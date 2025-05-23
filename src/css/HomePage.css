@@ -1,0 +1,23 @@
+.page-container.bg-intro {
+  background: url("src/assets/bg_intro-netflix_cover.png") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: white;
+  position: relative;
+}
+
+.page-container.bg-intro::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.749);
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}

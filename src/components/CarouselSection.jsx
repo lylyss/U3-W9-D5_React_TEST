@@ -36,8 +36,8 @@ function SectionCarousel({ title, search, onCardClick }) {
   }, [search]);
 
   const slides = [];
-  for (let i = 0; i < movies.length; i += 8) {
-    slides.push(movies.slice(i, i + 8));
+  for (let i = 0; i < movies.length; i += 5) {
+    slides.push(movies.slice(i, i + 10));
   }
 
   return (
@@ -47,8 +47,9 @@ function SectionCarousel({ title, search, onCardClick }) {
         {slides.map((group, idx) => (
           <Carousel.Item key={idx}>
             <div
-              className="d-flex justify-content-center gap-2"
+              className="d-flex justify-content-center"
               style={{
+                gap: "70px",
                 flexWrap: "nowrap",
                 overflow: "hidden",
                 width: "100%",

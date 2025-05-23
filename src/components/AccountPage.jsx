@@ -4,10 +4,12 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import netflixLogo from "../assets/netflix_logo.png";
 import kidsIcon from "../assets/kids_icon.png";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-export default function AccountPage({ onClose }) {
+export default function AccountPage() {
   const inputRef = useRef();
   const previewRef = useRef();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -40,7 +42,15 @@ export default function AccountPage({ onClose }) {
           background: "linear-gradient(180deg,rgba(3,3,3,1) 72%,rgba(4,4,4,0.87) 88%,rgba(4,4,4,0.57) 91%,rgba(3,3,3,0.29) 96%,rgba(3,3,3,0) 100%)",
         }}
       >
-        <a className="navbar-brand" href="#">
+        {/* Logo Netflix con funzionalità di navigazione alla homepage */}
+        <a
+          className="navbar-brand"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
           <img src={netflixLogo} alt="Netflix Logo" height="50" />
         </a>
       </nav>
@@ -172,9 +182,6 @@ export default function AccountPage({ onClose }) {
               </Button>
               <Button variant="outline-secondary" className="fw-bold px-4 rounded-0">
                 DELETE PROFILE
-              </Button>
-              <Button variant="outline-secondary" className="fw-bold px-4 rounded-0" onClick={onClose}>
-                CLOSE
               </Button>
             </div>
           </Container>

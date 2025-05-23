@@ -1,6 +1,6 @@
 body {
-  background-color: #1a1919; /* Colore scuro */
-  color: white; /* Testo bianco per contrasto */
+  background-color: #1a1919;
+  color: white;
 }
 
 .nomination-bg {
@@ -71,4 +71,12 @@ body {
 .search-result-item {
   padding: 10px;
   border-bottom: 1px solid #ccc;
+}
+
+.carousel-item img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05);
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
 
-export default function Settings({ show, onBack }) {
+export default function Settings({ show }) {
   const [showEmail, setShowEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPhone, setShowPhone] = useState(false);
@@ -11,10 +11,6 @@ export default function Settings({ show, onBack }) {
       <main className="container mt-0 ">
         <Container style={{ maxWidth: 850 }}>
           <div className="mt-4 px-3">
-            {/* Bottone Back */}
-            <Button variant="secondary" className="mb-3 rounded-0" onClick={onBack}>
-              Back
-            </Button>
             <h1 className="text-center text-md-start text-black fs-2">Account</h1>
             <div className="border-bottom border-setting mb-3 mt-3"></div>
 

@@ -90,8 +90,8 @@ export default function TvShows() {
   const secondFive = filteredShows.slice(5, 10); // Secondi 5 contenuti
 
   return (
-    <div className="page-container">
-      {selectedShow ? ( // Mostra i dettagli della serie selezionata
+    <div className="page-container bg-serie">
+      {selectedShow ? (
         <CardMoveInfo movie={selectedShow} onCardClick={() => setSelectedShow(null)} />
       ) : (
         <>
@@ -111,7 +111,7 @@ export default function TvShows() {
                           minWidth: "18%",
                           cursor: "pointer",
                         }}
-                        onClick={() => setSelectedShow(show)} // Imposta la serie selezionata
+                        onClick={() => setSelectedShow(show)}
                       >
                         <img
                           src={show.image}

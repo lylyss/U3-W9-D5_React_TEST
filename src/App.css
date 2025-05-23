@@ -80,3 +80,30 @@ body {
 .carousel-item img:hover {
   transform: scale(1.05);
 }
+
+.bg-serie {
+  background-image: url("src/assets/bg_seie.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.bg-serie::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2;
+}
+
+.page-container .content {
+  position: relative;
+  z-index: 3;
+}
